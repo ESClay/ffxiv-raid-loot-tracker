@@ -1,0 +1,1 @@
+# ffxiv-raid-loot-tracker
