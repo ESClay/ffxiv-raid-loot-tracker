@@ -1,13 +1,12 @@
 
 import * as React from "react";
-import {BrowserRouter} from "react-router-dom";
-
+import { Landing } from "./pages/Landing";
 
 const AppImpl = () => (
+//Check stored cookie here, and pass into Landing
+
 	<div>
-		<BrowserRouter>
-			<div>Hi!</div>
-		</BrowserRouter>
+		<Landing/>
 	</div>
 );
 
