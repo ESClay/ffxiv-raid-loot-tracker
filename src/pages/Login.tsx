@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 
 import { Button, Typography, makeStyles, Theme, createStyles, Paper, Container, Divider, ButtonGroup } from "@material-ui/core"
-import {BrowserRouter as Router, Switch, Route, Link as RouterLink, LinkProps as RouterLinkProps} from "react-router-dom"
+import {BrowserRouter as Router, Switch, Route, Redirect, useHistory} from "react-router-dom"
 import { Home } from "./Home";
+import {EnhancedLink} from "../components/EnhancedLink";
+import AppContext from "../components/AppContext";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -21,35 +24,37 @@ const useStyles = makeStyles((theme: Theme) =>
 	}
   }),
 );
-const EnhancedLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((props, ref) => (
-	<RouterLink innerRef={ref} {...props} />
-  ));
+
 export const Login : React.FC = () => {
 	const classes = useStyles();
+	let history = useHistory();
+	const context = useContext(AppContext);
+	
+	function discordLogin() {
+		console.log("Trying to push to home...");
+		
+		context.loggedIn = true;
+		
+		history.push("/home");
+	}
+	function googleLogin() {
+		context.loggedIn = true;
+		history.push("/home");
+	}
 	return (
-
 		<Container>
-			<Router>
-				<Paper className={classes.root}>
-					<div className={classes.children}>
-					<Button variant="contained" href="/signup" fullWidth={true}>Sign Up</Button>
-					<Divider/>
-					<Typography variant="h5">OR</Typography>
-					<Divider/>
-					<ButtonGroup>
-						<Button variant="contained" fullWidth={true} component={EnhancedLink} to="/login-discord">Log In with Discord</Button>
-						<Button variant="contained">Log In with Google</Button>
-					</ButtonGroup>
-					</div>
-				</Paper>
-				<Switch>
-					<Route path="/signup">
-					</Route>
-					<Route path="/login-discord">
-						<Home />
-					</Route>
-				</Switch>
-			</Router>
+			<Paper className={classes.root}>
+				<div className={classes.children}>
+				<Button variant="contained" href="/signup" fullWidth={true}>Sign Up</Button>
+				<Divider/>
+				<Typography variant="h5">OR</Typography>
+				<Divider/>
+				<ButtonGroup>
+					<Button variant="contained" fullWidth={true} onClick={discordLogin}>Log In with Discord</Button>
+					<Button variant="contained" fullWidth={true} onClick={googleLogin}>Log In with Google</Button>
+				</ButtonGroup>
+				</div>
+			</Paper>
 		</Container>
 	)
 }
